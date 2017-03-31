@@ -7,7 +7,7 @@ def call(Closure call) {
   }
 
   catchError {
-    stage 'Email' {
+    stage ("Email") {
       // Calculate email
       def remote = sh(returnStdout: true, script: 'git remote -v').trim()
       def matcher = (remote =~ "git@.+:(?<fork>.+)/.+\\(fetch\\)")
@@ -20,7 +20,7 @@ def call(Closure call) {
   }
 
   catchError {
-    stage("Notify slack") {
+    stage ("Notify slack") {
       def email = sh(returnStdout: true, script: 'git show -s --pretty=%aE').trim()
       def author = email.substring(0, email.indexOf('@'))
       def authorPretty = sh(returnStdout: true, script: 'git show -s --pretty=%aN').trim()
