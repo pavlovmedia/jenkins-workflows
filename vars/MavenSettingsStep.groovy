@@ -6,4 +6,5 @@ def call(prefix="Settings checkout") {
         doGenerateSubmoduleConfigurations: false, 
         extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'settings']], 
         submoduleCfg: [], userRemoteConfigs: [[url: "${repo}"]]]
+     }
 }
