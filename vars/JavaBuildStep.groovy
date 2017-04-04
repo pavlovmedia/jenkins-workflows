@@ -3,10 +3,10 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
   def mvnHome = tool 'Maven3'
   stage ("${prefix} build") {
     // Set up to do a full build, release or otherwise with deploys if applicable
-    def mvnTargets = "clean compile javadoc:aggregate checkstyle:checkstyle install"
+    def mvnTargets = "clean package javadoc:aggregate checkstyle:checkstyle install"
     
     if (branchName.endsWith("-release")) {
-      mvnTargets = "clean compile javadoc:aggregate source:jar javadoc:jar install deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
+      mvnTargets = "clean package javadoc:aggregate source:jar javadoc:jar install deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
     }
     // Run the build
     sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml "+mvnTargets
