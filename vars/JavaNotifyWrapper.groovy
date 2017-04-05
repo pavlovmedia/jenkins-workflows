@@ -27,7 +27,7 @@ def call(Closure call) {
       def remote = sh(returnStdout: true, script: 'git ls-remote --get-url').trim()
       if (!currentBuild.result.equals("SUCCESS")) {
         slackSend(color:"danger", message:"@${author} <${email}> caused a build failure on branch ${env.BRANCH_NAME} of ${remote}. See ${currentBuild.absoluteUrl} for details")
-      } else if (!currentBuild.previousBuild.result.equals("SUCCESS")) {
+      } else if (!currentBuild?.previousBuild.result.equals("SUCCESS")) {
         slackSend(color:"good", message:"@${author} <${email}> fixed the build failure on branch ${env.BRANCH_NAME} of ${remote}. Thanks ${authorPretty}!")
       }
     }
