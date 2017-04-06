@@ -1,18 +1,16 @@
-def call(imagename, version) {
+def call(imageName, version) {
+  def repo = "nexus.dev.pavlovmedia.corp:5000"
   stage("Docker build") {
-    sh "/usr/bin/docker build --no-cache -t ${imagename} ."
+    sh "/usr/bin/docker build --no-cache -t ${imageName} ."
 
     if (env.BRANCH_NAME.matches(/.*-release$/)) {
-      if (!version || version.matches(/.*-SNAPSHOT$/)) {
+      if (!version || version.matches(/.*-.*$/)) {
         throw new IllegalStateException("Release builds must have a valid version")
       }
 
-      stage("Docker tag") {
-        sh "/usr/bin/docker tag ${imagename} ${repo}/${imagename}:${version}"
-      }
-      
-      stage("Docker push (aka deploy)") {
-        sh "/usr/bin/docker push ${repo}/${imagename}:${version}"
+      stage("Docker deploy") {
+        sh "/usr/bin/docker tag ${imageName} ${repo}/${imageName}:${version}"
+        sh "/usr/bin/docker push ${repo}/${imageName}:${version}"
       }
     }
   }

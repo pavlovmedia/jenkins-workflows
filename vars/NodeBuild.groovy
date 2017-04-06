@@ -1,8 +1,7 @@
 // Does a node build
-def call(nodeName="node") {
+def call() {
   // Run all this in a single node
-  node("${nodeName}") {
-    echo "Running on ${nodeName}"
+  node("node") {
     NotifyWrapper {
       stage ("Project checkout") {
         checkout scm
@@ -11,16 +10,16 @@ def call(nodeName="node") {
       NodeBuildStep()
 
       // docker if we have it
-      if (fileExists("version.json") && fileExists("Dockerfile")) {
-        // This was hard-coded in the original file
-        def imagename = "spa-ranch"
-        def versionText = readFile("version.json")
-        def versionJson = new groovy.json.JsonSlurper().parseText(versionText)
-        version = versionJson?.version
-        versionJson = null
-        println "Read version as ${version}"
-
-        DockerBuildStep(imagename, version)
+      if (fileExists("Dockerfile")) {
+        def packageText = readFile("package.json")
+        def packageJson = new groovy.json.JsonSlurper().parseText(packageText)        
+        def version = packageJson?.version
+        def imageName = packageJson?.name
+        packageJson = null
+        if (version && imageName) {
+          println "Read version as ${version}, image as ${imageName}"
+          DockerBuildStep(imageName, version)
+        }
       }
     }
   }
