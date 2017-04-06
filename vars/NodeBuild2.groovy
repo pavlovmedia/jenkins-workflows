@@ -2,15 +2,14 @@
 def call() {
 // Run all this in a single node
 node("docker") {
-    //echo "Running on ${nodeName}"
-    NotifyWrapper {
+    docker.image("node:").inside {
+      //echo "Running on ${nodeName}"
+      NotifyWrapper {
       stage ("Project checkout") {
-        checkout scm
+          checkout scm
       }
-
-      docker.image("node").inside {
-        sh "node -v"
-          NodeBuildStep()
+      sh "node -v"
+      NodeBuildStep()
       }
     }
   }
