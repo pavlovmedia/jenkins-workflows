@@ -7,9 +7,8 @@ node("docker") {
       stage ("Project checkout") {
         checkout scm
       }
-    docker.image("node:4.8.2-alpine").inside {
-        sh "node -v"
-    }
+      
+      NodeBuildStep()
     }
   }
 }
