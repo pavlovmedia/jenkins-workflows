@@ -1,9 +1,9 @@
-// Does a full java 8 build
+// Does a node build
 def call(nodeName="node") {
   // Run all this in a single node
   node("${nodeName}") {
     echo "Running on ${nodeName}"
-    JavaNotifyWrapper {
+    NotifyWrapper {
       stage ("Project checkout") {
         checkout scm
       }
