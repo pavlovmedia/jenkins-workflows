@@ -19,7 +19,7 @@ def call(nodeName="node") {
         version = versionJson?.version
         println "Read version as ${version}"
 
-        DockerBuildSet(imagename, version)
+        DockerBuildStep(imagename, version)
       }
     }
   }
