@@ -4,8 +4,10 @@ def call() {
       sh "npm install"
   }
 
-  stage("gulp build") {
-      sh "gulp build --production"
+  if (fileExists("gulp.js") || fileExists("Gulp.js")) {
+    stage("gulp build") {
+        sh "gulp build --production"
+    }
   }
 
   if (!fileExists("Dockerfile")) {
