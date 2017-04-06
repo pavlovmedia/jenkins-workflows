@@ -8,7 +8,7 @@ def call(nodeName="node") {
         checkout scm
       }
 
-      //NodeBuildStep()
+      NodeBuildStep()
 
       // docker if we have it
       if (fileExists("version.json") && fileExists("Dockerfile")) {
