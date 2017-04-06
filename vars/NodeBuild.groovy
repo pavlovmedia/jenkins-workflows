@@ -9,6 +9,18 @@ def call(nodeName="node") {
       }
 
       NodeBuildStep()
+
+      // docker if we have it
+      if (fileExists("version.json") && fileExists("Dockerfile")) {
+        // This was hard-coded in the original file
+        def imagename = = "spa-ranch"
+        def versionText = readFile("version.json")
+        def versionJson = new groovy.json.JsonSlurper().parseText(versionText)
+        version = versionJson?.version
+        println "Read version as ${version}"
+
+        DockerBuildSet(imagename, version)
+      }
     }
   }
 }
