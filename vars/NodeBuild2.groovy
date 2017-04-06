@@ -2,7 +2,7 @@
 def call() {
 // Run all this in a single node
 node("docker") {
- docker.image("node:4.8.2-alpine").inside {
+ docker.image("node").inside {
     echo "Running on ${nodeName}"
     NotifyWrapper {
       stage ("Project checkout") {
