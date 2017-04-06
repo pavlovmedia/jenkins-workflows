@@ -8,7 +8,7 @@ def call(nodeName="node") {
         checkout scm
       }
 
-      NodeBuildStep()
+      //NodeBuildStep()
 
       // docker if we have it
       if (fileExists("version.json") && fileExists("Dockerfile")) {
@@ -17,6 +17,7 @@ def call(nodeName="node") {
         def versionText = readFile("version.json")
         def versionJson = new groovy.json.JsonSlurper().parseText(versionText)
         version = versionJson?.version
+        versionJson = null
         println "Read version as ${version}"
 
         DockerBuildStep(imagename, version)
