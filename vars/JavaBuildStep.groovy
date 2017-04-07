@@ -6,7 +6,7 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
     def mvnTargets = "clean install checkstyle:checkstyle"
     
     if (branchName.endsWith("-release")) {
-      mvnTargets = "-X clean deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
+      mvnTargets = "clean deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
     }
     // Run the build
     sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml "+mvnTargets
@@ -34,10 +34,6 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
 
     // Deploy this if we are on a release branch
     if (branchName.endsWith("-release")) {
-      stage ("${prefix} Deploy") {
-        sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml source:jar javadoc:jar deploy -DskipTests=true -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
-      }
-
       if (doObr) {
         stage ("${prefix} OBR Deploy") {
           sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov"
