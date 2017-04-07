@@ -6,7 +6,7 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
     def mvnTargets = "clean install javadoc:aggregate checkstyle:checkstyle"
     
     if (branchName.endsWith("-release")) {
-      mvnTargets = "clean install javadoc:aggregate checkstyle:checkstyle source:jar javadoc:jar deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
+      mvnTargets = "-X clean install javadoc:aggregate checkstyle:checkstyle source:jar javadoc:jar deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
     }
     // Run the build
     sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml "+mvnTargets
