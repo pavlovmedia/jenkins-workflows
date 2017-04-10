@@ -37,7 +37,7 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
       if (doObr) {
         stage ("${prefix} OBR Deploy") {
           // XXX: Docker won't run here as long as the plugin is 1.0.2+
-          sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
+          sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy:deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
         }
       }
     }
