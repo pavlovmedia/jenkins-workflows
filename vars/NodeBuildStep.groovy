@@ -4,12 +4,13 @@ def call() {
       sh "npm install"
   }
 
-  if (fileExists("gulp.js") || fileExists("Gulp.js")) {
+  if (fileExists("gulpfile.js") || fileExists("Gulpfile.js")) {
     stage("gulp build") {
         sh "gulp build --production"
     }
   }
-
+  
+  /** Don't do npm releases
   if (!fileExists("Dockerfile")) {
     stage("npm deploy") {
       if (env.BRANCH_NAME.matches(/.*-release$/)) {
@@ -20,4 +21,5 @@ def call() {
       }
     }
   }
+  **/
 }

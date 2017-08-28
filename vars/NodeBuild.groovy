@@ -12,7 +12,7 @@ def call() {
       // docker if we have it
       if (fileExists("Dockerfile")) {
         def packageText = readFile("package.json")
-        def packageJson = new groovy.json.JsonSlurper().parseText(packageText)        
+        def packageJson = new groovy.json.JsonSlurper().parseText(packageText)
         def version = packageJson?.version
         def imageName = packageJson?.name
         packageJson = null
