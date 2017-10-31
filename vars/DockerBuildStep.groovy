@@ -1,5 +1,5 @@
 def call(imageName, version) {
-  def repo = "nexus.dev.pavlovmedia.corp:5000"
+  def repo = "dockerhub.pavlovmedia.net"
   stage("Docker build") {
     sh "/usr/bin/docker build --no-cache -t ${imageName} ."
 
