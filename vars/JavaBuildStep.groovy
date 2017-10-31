@@ -6,7 +6,7 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
     def mvnTargets = "clean install checkstyle:checkstyle"
     
     if (branchName.endsWith("-release")) {
-      mvnTargets = "clean deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='nexus.dev.pavlovmedia.corp:5000'"
+      mvnTargets = "clean deploy -DaltDeploymentRepository=release.builder.dev.pavlovmedia.corp::default::http://release.builder.dev.pavlovmedia.corp/nexus/content/repositories/releases/ -Ddocker.repo='dockerhub.pavlovmedia.net'"
     }
     // Run the build
     sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml "+mvnTargets
