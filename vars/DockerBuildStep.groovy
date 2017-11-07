@@ -1,5 +1,4 @@
-def call(imageName, version) {
-  def repo = "dockerhub.pavlovmedia.net"
+def call(imageName, version, repo="dockerhub.pavlovmedia.net") {
   stage("Docker build") {
     sh "/usr/bin/docker build --no-cache -t ${imageName} ."
 
