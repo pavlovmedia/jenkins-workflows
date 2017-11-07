@@ -2,7 +2,6 @@
 def call(imageName, repo="dockerhub.pavlovmedia.net") {
   // Run all this in a single node
   node("docker") {
-    echo "Running on ${nodeName}"
     NotifyWrapper {
       stage ("Project checkout") {
         checkout scm
