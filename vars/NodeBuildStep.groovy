@@ -2,6 +2,8 @@
 def call() {
   stage("npm install") {
       sh "npm cache clear"
+      sh "rm -rf node_modules"
+      sh "node --version"
       sh "npm install"
   }
 
@@ -16,7 +18,7 @@ def call() {
     version = versionJson?.version
     println "Read version as ${version}"
     versionJson=""
-    
+
     stage("npm deploy") {
       if (env.BRANCH_NAME.matches(/.*-release$/)) {
         if (!version || version.matches(/.*-.*$/)) {
