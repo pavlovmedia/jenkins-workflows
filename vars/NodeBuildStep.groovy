@@ -4,8 +4,7 @@ def call() {
       environment {
         PATH = "/home/dev/.nvm/versions/node/v6.9.5/bin:$PATH"
       }
-      sh "npm cache clear"
-      sh "rm -rf node_modules"
+      sh "rm -rf node_modules target"
       sh "npm --version"
       sh "npm install"
   }
