@@ -1,4 +1,4 @@
-def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
+def call(branchName, prefix="Java", pom="./pom.xml", doObr=true, obr2WebhookId="") {
 
   def mvnHome = tool 'Maven3'
   stage ("${prefix} build") {
@@ -38,8 +38,20 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true) {
         stage ("${prefix} OBR Deploy") {
           // XXX: Docker won't run here as long as the plugin is 1.0.3+
           sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
+
+          if (obr2WebhookId) {
+            postObr2Webhook(obr2WebhookId)
+          }
         }
       }
     }
   }
+}
+
+def postObr2Webhook(obr2WebhookId) {
+  // SSL is not working at this time -- javax.net.ssl.SSLHandshakeException is raised
+  def conn = new URL("http://obr-rest.dev.pavlovmedia.corp/services/webhook/${obr2WebhookId}").openConnection()
+  conn.setRequestMethod("POST")
+
+  return conn.getResponseCode() == 200
 }
