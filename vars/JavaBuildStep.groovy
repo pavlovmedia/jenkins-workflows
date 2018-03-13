@@ -1,4 +1,4 @@
-def call(branchName, prefix="Java", pom="./pom.xml", doLegacyObr=true, doObr2=false, obr2WebhookId="") {
+def call(branchName, prefix="Java", pom="./pom.xml", doLegacyObr=true, obr2WebhookId="") {
 
   def mvnHome = tool 'Maven3'
   stage ("${prefix} build") {
@@ -39,7 +39,7 @@ def call(branchName, prefix="Java", pom="./pom.xml", doLegacyObr=true, doObr2=fa
         sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
       }
 
-      if (doObr2 && obr2WebhookId) {
+      if (obr2WebhookId) {
         postObr2Webhook(obr2WebhookId)
       }
     }
