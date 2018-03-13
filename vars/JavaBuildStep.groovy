@@ -1,4 +1,4 @@
-def call(branchName, prefix="Java", pom="./pom.xml", doObr=true, obr2WebhookId="") {
+def call(branchName, prefix="Java", pom="./pom.xml", doLegacyObr=true, doObr2=false, obr2WebhookId="") {
 
   def mvnHome = tool 'Maven3'
   stage ("${prefix} build") {
@@ -34,17 +34,13 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true, obr2WebhookId="
 
     // Deploy this if we are on a release branch
     if (branchName.endsWith("-release")) {
-      if (doObr) {
-        stage ("${prefix} OBR Deploy") {
-          if (obr2WebhookId) {
-            postObr2Webhook(obr2WebhookId)
-          } else {
-            // invoke PackageDrone OBR if webhook ID is not present (fallback)
+      if (doLegacyObr) {
+        // XXX: Docker won't run here as long as the plugin is 1.0.3+
+        sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
+      }
 
-            // XXX: Docker won't run here as long as the plugin is 1.0.3+
-            sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
-          }
-        }
+      if (doObr2 && obr2WebhookId) {
+        postObr2Webhook(obr2WebhookId)
       }
     }
   }
