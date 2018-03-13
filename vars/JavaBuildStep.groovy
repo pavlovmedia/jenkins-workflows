@@ -47,8 +47,7 @@ def call(branchName, prefix="Java", pom="./pom.xml", doLegacyObr=true, obr2Webho
 }
 
 def postObr2Webhook(obr2WebhookId) {
-  // SSL is not working at this time -- javax.net.ssl.SSLHandshakeException is raised
-  def conn = new URL("http://obr-rest.dev.pavlovmedia.corp/services/webhook/${obr2WebhookId}").openConnection()
+  def conn = new URL("https://obr2-rest.pavlovmedia.net/services/webhook/${obr2WebhookId}").openConnection()
   conn.setRequestMethod("POST")
 
   return conn.getResponseCode() == 200
