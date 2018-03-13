@@ -36,11 +36,13 @@ def call(branchName, prefix="Java", pom="./pom.xml", doObr=true, obr2WebhookId="
     if (branchName.endsWith("-release")) {
       if (doObr) {
         stage ("${prefix} OBR Deploy") {
-          // XXX: Docker won't run here as long as the plugin is 1.0.3+
-          sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
-
           if (obr2WebhookId) {
             postObr2Webhook(obr2WebhookId)
+          } else {
+            // invoke PackageDrone OBR if webhook ID is not present (fallback)
+
+            // XXX: Docker won't run here as long as the plugin is 1.0.3+
+            sh "${mvnHome}/bin/mvn -s settings/Builders/settings.xml deploy -DaltDeploymentRepository=obr.dev.pavlovmedia.corp::default::http://obr.dev.pavlovmedia.corp/maven/pavlov -DskipDocker=true"
           }
         }
       }
