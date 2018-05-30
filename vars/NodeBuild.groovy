@@ -1,7 +1,7 @@
 // Does a node build
-def call() {
+def call(nodeName="node") {
   // Run all this in a single node
-  node("node") {
+  node("${nodeName}") {
     NotifyWrapper {
       stage ("Project checkout") {
         checkout scm
