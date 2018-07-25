@@ -13,10 +13,6 @@ def call() {
     sh "npm run build"
   }
   
-  stage("cleanup") {
-      sh "rm -rf ./node_modules"
-  }
-
   if (!fileExists("Dockerfile")) {
     def version
     def versionText = readFile("package.json")
@@ -33,5 +29,9 @@ def call() {
         sh "npm publish"
       }
     }
+  }
+  
+  stage("cleanup") {
+    sh "rm -rf ./node_modules"
   }
 }
