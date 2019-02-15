@@ -15,7 +15,7 @@ def call(Closure call) {
       matcher = null // Since the job gets serialized
 
       echo "Sending email to ${email} if this is in error"
-      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: email, sendToIndividuals: true])
+      // step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: email, sendToIndividuals: true])
     }
   }
 
@@ -26,9 +26,9 @@ def call(Closure call) {
       def authorPretty = sh(returnStdout: true, script: 'git show -s --pretty=%aN').trim()
       def remote = sh(returnStdout: true, script: 'git ls-remote --get-url').trim()
       if (!currentBuild.result.equals("SUCCESS")) {
-        slackSend(color:"danger", message:"@${author} <${email}> caused a build failure on branch ${env.BRANCH_NAME} of ${remote}. See ${currentBuild.absoluteUrl} for details")
+        // slackSend(color:"danger", message:"@${author} <${email}> caused a build failure on branch ${env.BRANCH_NAME} of ${remote}. See ${currentBuild.absoluteUrl} for details")
       } else if (currentBuild?.previousBuild && !"SUCCESS".equals(currentBuild?.previousBuild?.result)) {
-        slackSend(color:"good", message:"@${author} <${email}> fixed the build failure on branch ${env.BRANCH_NAME} of ${remote}. Thanks ${authorPretty}!")
+        // slackSend(color:"good", message:"@${author} <${email}> fixed the build failure on branch ${env.BRANCH_NAME} of ${remote}. Thanks ${authorPretty}!")
       }
     }
   }
